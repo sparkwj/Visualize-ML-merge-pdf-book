@@ -17,6 +17,7 @@ names = [
 ]
 
 Path("repos").mkdir(exist_ok=True, parents=True)
+Path("releases").mkdir(exist_ok=True, parents=True)
 
 for name, book in names:
     print("=" * 30)
@@ -24,7 +25,7 @@ for name, book in names:
     repo = f"{base_url}/{name}.git"
     res = subprocess.run(["git", "clone", repo, f"repos/{name}"], capture_output=True)
 
-    files = sorted(Path(f"repos/{name}").glob("*.pdf"))
+    files = sorted(Path(f"repos/{name}").glob("*Ch*.pdf"))
 
     merger = PdfWriter()
 
@@ -37,7 +38,7 @@ for name, book in names:
         print(bookmark)
         merger.append(pdf, bookmark)
 
-    merger.write(f"{name}_{book}.pdf")
+    merger.write(f"releases/{name}_{book}.pdf")
     merger.close()
 
 if __name__ == "__main__":
